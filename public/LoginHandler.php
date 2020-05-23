@@ -26,7 +26,7 @@ function checkLoggedIn(){
 function attemptOAuthLogin(Request $request, Response $response, $args){
     if(isset($_SESSION['access_token'])){
         //echo "already Logged In";
-        header('Location: http://localhost:3000');
+        header('Location: https://cc-contest-arena.herokuapp.com');
         die();
         return $response;
     }
