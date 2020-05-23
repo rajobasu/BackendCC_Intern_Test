@@ -5,7 +5,13 @@ declare(strict_types = 1);
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
+/*
+include "CurlRequest.php";
+include "index.php";
+include "ContestAccessHandler.php";
+include "SubmissionHandler.php";
 
+*/
 
 function checkLoggedIn(){
 	if(isset($_SESSION['access_token']))return true;
@@ -75,7 +81,8 @@ function generate_access_token_from_refresh_token(){
 
     $oauth_config = array('grant_type' => 'refresh_token', 'refresh_token'=> $GLOBALS['refresh_token'], 'client_id' => $GLOBALS['CLIENT_ID'],
         'client_secret' => $GLOBALS['CLIENT_SECRET']);
-    $response = json_decode(make_curl_request($URLs, $oauth_config), true);
+    $rmObjec = CurlRequestMaker::getInstance();
+    $response = json_decode($rmObjec->make_curl_request($URLs, $oauth_config), true);
     $result = $response['result']['data'];
 
     $_SESSION['access_token'] = $result['access_token'];

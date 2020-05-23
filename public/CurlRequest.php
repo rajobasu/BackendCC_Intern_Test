@@ -14,7 +14,7 @@ class CurlRequestMaker{
     private static $INSTANCE;
 
     private final function __constructor(){
-
+        
     }
     /**
      * This just redirects.

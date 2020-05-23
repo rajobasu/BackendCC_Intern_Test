@@ -6,11 +6,12 @@ header("Access-Control-Allow-Origin: http://localhost:3000");
 header('Access-Control-Allow-Credentials: true');
 header("Content-type: application/json");
 //header("Access-Control-Allow-Headers: Content-Type, origin");
-
+/* 
 include "CurlRequest.php";
 include "LoginHandler.php";
 include "ContestAccessHandler.php";
 
+*/
 
 
 function getSubmissionsByUser($req,$res,$args){

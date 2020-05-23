@@ -14,6 +14,7 @@ use Slim\Factory\AppFactory;
 include "CurlRequest.php";
 include "LoginHandler.php";
 include "ContestAccessHandler.php";
+include "SubmissionHandler.php";
 
 require __DIR__ . '/../vendor/autoload.php';
 

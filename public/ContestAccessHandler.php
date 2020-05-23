@@ -5,7 +5,13 @@ header("Access-Control-Allow-Origin: http://localhost:3000");
 header('Access-Control-Allow-Credentials: true');
 header("Content-type: application/json");
 
+/*
+include "CurlRequest.php";
+include "LoginHandler.php";
+include "index.php";
+include "SubmissionHandler.php";
 
+*/
 
 function getContestList($req,$res,$args){
 	if(checkLoggedIn()){
