@@ -63,7 +63,7 @@ function getAccessTokens(Request $request, Response $response, $args) {
     $_SESSION['access_token'] = $accessToken;
     $_SESSION['refresh_token'] = $refreshToken;
     $_SESSION['time_'] = time();
-    header('Location: http://localhost:3000');
+    header('Location: https://cc-contest-arena.herokuapp.com');
     die();
     $response->getBody()->write($dataGot);
     return $response;
