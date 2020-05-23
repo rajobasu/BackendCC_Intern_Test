@@ -29,30 +29,26 @@ function getContestList($req,$res,$args){
 
 function getContestDetails($req,$res,$args){
 	$contestCode=$args['contestcode'];
-	if(checkLoggedIn()){
-		$url = 'https://api.codechef.com/contests/'.$contestCode.'?fields=code,name,problemsList';
-		$headers[] ='Authorization: Bearer ' . $_SESSION['access_token'];
-		$response = CurlRequestMaker::getInstance()->make_curl_request($url,false,$headers);
-		$data = json_decode($response,true);
-		$res->getBody()->write(json_encode($data['result']['data']['content']));
-	}else{
-		$res->getBody()->write(getErrorMessage());
-	}
+	
+	$url = 'https://api.codechef.com/contests/'.$contestCode.'?fields=code,name,problemsList';
+	$headers[] ='Authorization: Bearer ' . $_SESSION['access_token'];
+	$response = CurlRequestMaker::getInstance()->make_curl_request($url,false,$headers);
+	$data = json_decode($response,true);
+	$res->getBody()->write(json_encode($data['result']['data']['content']));
+
 	return $res;
 }
 
 function getProblemDetails($req,$res,$args){
 	$contestCode=$args['contestcode'];
 	$problemCode= $args['problemcode'];
-	if(checkLoggedIn()){
-		$url = 'https://api.codechef.com/contests/'.$contestCode.'/problems/'.$problemCode.'?fields=problemName,body';
-		$headers[] ='Authorization: Bearer ' . $_SESSION['access_token'];
-		$response = CurlRequestMaker::getInstance()->make_curl_request($url,false,$headers);
-		$data = json_decode($response,true);
-		$res->getBody()->write(json_encode($data['result']['data']['content']));
-	}else{
-		$res->getBody()->write(getErrorMessage());
-	}
+	
+	$url = 'https://api.codechef.com/contests/'.$contestCode.'/problems/'.$problemCode.'?fields=problemName,body';
+	$headers[] ='Authorization: Bearer ' . $_SESSION['access_token'];
+	$response = CurlRequestMaker::getInstance()->make_curl_request($url,false,$headers);
+	$data = json_decode($response,true);
+	$res->getBody()->write(json_encode($data['result']['data']['content']));
+
 	return $res;
 }
 
@@ -62,14 +58,12 @@ function getRankList($req,$res,$args){
 	if(isset($_GET['offset'])){
 		$offset = $_GET['offset'];
 	}
-	if(checkLoggedIn()){
-		$url = 'https://api.codechef.com/rankings/'.$contestCode.'?fields=rank,username,totalScore&offset='.$offset.'&sortBy=rank';
-		$headers[] ='Authorization: Bearer ' . $_SESSION['access_token'];
-		$response = CurlRequestMaker::getInstance()->make_curl_request($url,false,$headers);
-		$data = json_decode($response,true);
-		$res->getBody()->write(json_encode($data['result']['data']));
-	}else{
-		$res->getBody()->write(getErrorMessage());
-	}
+	
+	$url = 'https://api.codechef.com/rankings/'.$contestCode.'?fields=rank,username,totalScore&offset='.$offset.'&sortBy=rank';
+	$headers[] ='Authorization: Bearer ' . $_SESSION['access_token'];
+	$response = CurlRequestMaker::getInstance()->make_curl_request($url,false,$headers);
+	$data = json_decode($response,true);
+	$res->getBody()->write(json_encode($data['result']['data']));
+	
 	return $res;
 }

@@ -79,24 +79,36 @@ function logout(Request $request, Response $response, $args){
 function generate_access_token_from_refresh_token(){
     $URL = 'https://api.codechef.com/oauth/token';
 
-    $oauth_config = array('grant_type' => 'refresh_token', 'refresh_token'=> $GLOBALS['refresh_token'], 'client_id' => $GLOBALS['CLIENT_ID'],
+    $oauth_config = array(
+        'grant_type' => 'refresh_token', 
+        'refresh_token'=> $_SESSION['refresh_token'],
+        'client_id' => $GLOBALS['CLIENT_ID'],
         'client_secret' => $GLOBALS['CLIENT_SECRET']);
     $rmObjec = CurlRequestMaker::getInstance();
-    $response = json_decode($rmObjec->make_curl_request($URLs, $oauth_config), true);
+    $primaryResponse = $rmObjec->make_curl_request($URLs, $oauth_config);
+    if($primaryResponse == false){
+        return false;
+    }
+    $response = json_decode($primaryResponse, true);
     $result = $response['result']['data'];
 
     $_SESSION['access_token'] = $result['access_token'];
     $_SESSION['refresh_token'] = $result['refresh_token'];
     //$oauth_details['scope'] = $result['scope'];
     $_SESSION['time_'] = time();
-    return $oauth_details;
+    return true;
+    //return $oauth_details;
 
 }
 
 
 function refreshToken(){
     if(!checkLoggedIn())return;
-    if(time() > 3500 + $_SESSION['time_'])generate_access_token_from_refresh_token();
+    if(time() > 3500 + $_SESSION['time_']){
+        generate_access_token_from_refresh_token();
+        session_destroy();
+    }
+    
 }
 
 

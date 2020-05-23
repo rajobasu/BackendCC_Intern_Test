@@ -39,25 +39,25 @@ function logincheckr($req, $res, $args){
 
 
 function getUserInfo($req,$res,$args){
-	if(checkLoggedIn()){
-		
-		$url = "https://api.codechef.com/users/me";
-		$headers[] ='Authorization: Bearer ' . $_SESSION['access_token'];
-		$response = CurlRequestMaker::getInstance()->make_curl_request($url,false,$headers);
-		$data = json_decode($response,true);
-		$res->getBody()->write(json_encode($data['result']['data']['content']));
-		return $res;
-	}else{
-		$res->getBody()->write(getErrorMessage());
-		return $res;
-	}	
+	$url = "https://api.codechef.com/users/me";
+	$headers[] ='Authorization: Bearer ' . $_SESSION['access_token'];
+	$response = CurlRequestMaker::getInstance()->make_curl_request($url,false,$headers);
+	$data = json_decode($response,true);
+	$res->getBody()->write(json_encode($data['result']['data']['content']));
+	return $res;	
 }
 
-
+/**
+ * 
+ * 
+ * A higher order function to check logged in and refresh token
+ */
 function validateLogin($callback){
 	return function($req, $res, $args) use ($callback){
-     	if(checkLoggedIn()){
-			 refreshToken();
+		if(checkLoggedIn())refreshToken(); 
+		// we keep a second check to ensure we actually got a correct new accesstoken using the
+		// refresh token.
+		if(checkLoggedIn()){
 			return $callback($req, $res, $args);
 		}else{
 			$res->getBody()->write(getErrorMessage());
@@ -76,15 +76,15 @@ $app->get('/api/login', attemptOAuthLogin);
 $app->get('/api/login/keydetails', getAccessTokens);
 $app->get('/api/logout',logout);
 $app->get('/api/loggedinstatus', logincheckr);
-$app->get('/api/userinfo', getUserInfo );
-$app->get('/api/contestlist/{type}',getContestList);
-$app->get('/api/contestpage/{contestcode}', getContestDetails);
-$app->get('/api/contestpage/{contestcode}/problems/{problemcode}', getProblemDetails);
-$app->get('/api/ranklist/{contestcode}',getRankList);
-$app->get('/api/submissions/{contestCode}/user/{username}', getSubmissionsByUser);
-$app->get('/api/submissions/{problemCode}', getSubmissionsByProblem);
-$app->get('/api/languages', getSupportedLanguages);
-$app->get('/api/getsubmitstatus/{link}', getSubmissionStatus);
+$app->get('/api/userinfo', validateLogin(getUserInfo ));
+$app->get('/api/contestlist/{type}',validateLogin(getContestList));
+$app->get('/api/contestpage/{contestcode}', validateLogin(getContestDetails));
+$app->get('/api/contestpage/{contestcode}/problems/{problemcode}', validateLogin(getProblemDetails));
+$app->get('/api/ranklist/{contestcode}',validateLogin(getRankList));
+$app->get('/api/submissions/{contestCode}/user/{username}',validateLogin( getSubmissionsByUser));
+$app->get('/api/submissions/{problemCode}', validateLogin(getSubmissionsByProblem));
+$app->get('/api/languages',validateLogin( getSupportedLanguages));
+$app->get('/api/getsubmitstatus/{link}',validateLogin( getSubmissionStatus));
 
 $app->post('/api/submit', submitCode);
 
