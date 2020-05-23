@@ -14,8 +14,9 @@ include "SubmissionHandler.php";
 */
 
 function getContestList($req,$res,$args){
+	$type = $args['type'];
 	if(checkLoggedIn()){
-		$url = "https://api.codechef.com/contests?fields=code,name&status=past&offset=1&limit=30";
+		$url = "https://api.codechef.com/contests?fields=code,name&status=".$type."&offset=1";
 		$headers[] ='Authorization: Bearer ' . $_SESSION['access_token'];
 		$response = CurlRequestMaker::getInstance()->make_curl_request($url,false,$headers);
 		$data = json_decode($response,true);

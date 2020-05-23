@@ -77,7 +77,7 @@ $app->get('/api/login/keydetails', getAccessTokens);
 $app->get('/api/logout',logout);
 $app->get('/api/loggedinstatus', logincheckr);
 $app->get('/api/userinfo', getUserInfo );
-$app->get('/api/contestlist',getContestList);
+$app->get('/api/contestlist/{type}',getContestList);
 $app->get('/api/contestpage/{contestcode}', getContestDetails);
 $app->get('/api/contestpage/{contestcode}/problems/{problemcode}', getProblemDetails);
 $app->get('/api/ranklist/{contestcode}',getRankList);
