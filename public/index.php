@@ -20,7 +20,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $CLIENT_ID = "2772597d9ced75b5d8fc0e0a569e27c2";
 $CLIENT_SECRET = "537bfd068d4bdcf6e54eafe1793ce083";
-$REDIRECT_URI = 'http://localhost:8080/api/login/keydetails';
+$REDIRECT_URI = 'https://cc-contest-arena-backend.herokuapp.com/api/login/keydetails';
 
 /**
  * 
